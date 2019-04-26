@@ -9,7 +9,9 @@ server.use('/api/actions', actionsRouter);
 server.use('/api/projects', projectsRouter);
 
 server.get('/', (req, res) => {
-    res.send('BackEnd Sprint Challenge, Node and Express.')
+    res.send({
+        welcome: process.env.HELLO
+    })
 })
 
 

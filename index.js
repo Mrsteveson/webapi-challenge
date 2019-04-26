@@ -1,3 +1,4 @@
+const envReader = require('dotenv').config();
 // Bringing in server.
 const server = require('./server.js');
 
