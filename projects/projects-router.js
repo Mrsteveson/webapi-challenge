@@ -76,7 +76,7 @@ router.put('/:id', (req, res) => {
     const { name, description } = req.body;
 
     if(!name || !description) {
-        res.status(400).json({ message: "Please provide a name and description for this project."})
+        res.status(400).json({ message: "Please provide an updated name and description for this project."})
     }
 
     db

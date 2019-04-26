@@ -4,10 +4,94 @@ const db = require('../data/helpers/actionModel.js');
 const router = express.Router();
 
 // CRUD Operations
-// Get. **Postman Tested: **
-// Get by ID. **Postman Tested: **
-// Post. **Postman Tested: **
-// Delete. **Postman Tested: **
+// Get. **Postman Tested: working**
+router.get('/', (req, res) => {
+    db
+    .get()
+    .then(actions => {
+        res.status(200).json(actions)
+    })
+    .catch(err => {
+        res.status(500).json({ message: "An error occurred getting the actions."})
+    })
+})
+
+// Get by ID. **Postman Tested: working**
+router.get('/:id', (req, res) => {
+    const id = req.params.id;
+
+    db
+    .get(id)
+    .then(action => {
+        if(action) {
+            res.status(200).json(action)
+        } else {
+            res.status(404).json({ message: "The action with the specified ID does not exist."})
+        } 
+    })
+    .catch(err => {
+        res.status(500).json({ message: "An error occurred getting the specified action."})
+    })
+})
+
+// Post. **Postman Tested: working**
+// MUST BE POSTED TO A VALID PROJECT_ID SAME THING YOU MISSED THE OTHER DAY PATTY.
+router.post('/', (req, res) => {
+    const { project_id, description, notes }= req.body;
+
+    if(!project_id || !description || !notes) {
+        res.status(400).json({ message: "Please provide a valid project ID as well as a description and notes for this action."})
+    }
+
+    db
+    .insert({ project_id, description, notes })
+    .then(action => {
+        res.status(201).json(action)
+    })
+    .catch(err => {
+        res.status(500).json({ message: "An error occurred posting the new action."})
+    })
+})
+
+// Delete. **Postman Tested: working**
+router.delete('/:id', (req, res) => {
+    const id = req.params.id;
+
+    db
+    .remove(id)
+    .then(action => {
+        if(action) {
+            res.status(200).json(action)
+        } else {
+            res.status(400).json({ message: "The specified action does not exist."})
+        }
+    })
+    .catch( err => {
+        res.status(500).json({ message: "An error occurred deleting the specified action."})
+    })
+})
+
 // Put/Update. **Postman Tested: **
+router.put('/:id', (req, res) => {
+    const id = req.params.id;
+    const { description, notes } = req.body;
+
+    if(!description || !notes) {
+        res.status(400).json({ message: "Please provide an updated description and notes for this action."})
+    }
+
+    db
+    .update(id, { description, notes})
+    .then(action => {
+        if(action) {
+            res.status(200).json(action)
+        } else {
+            res.status(400).json({ message: "The specified action does not exist."})
+        }
+    })
+    .catch(err => {
+        res.status(500).json({ message: "An error occurred updating the specified action"})
+    })
+})
 
 module.exports = router;
