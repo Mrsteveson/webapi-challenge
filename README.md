@@ -44,7 +44,7 @@ Demonstrate your understanding of this Sprint's concepts by answering the follow
 
 - [ ] How can we partition our application into sub-applications?
 
-        Using express routers we are able to break our code into their own separate files representing the pieces they are addressing.
+        Using express routers we are able to break our code into their own separate files, which represent the pieces they are addressing.
 
 ## Project Setup
 
