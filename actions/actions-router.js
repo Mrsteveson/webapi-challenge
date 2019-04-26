@@ -3,6 +3,16 @@ const express = require('express');
 const db = require('../data/helpers/actionModel.js');
 const router = express.Router();
 
+// Custom Middleware checking for description length. 128characters max!
+const noEssays = (req, res, next) => {
+    if(req.body.description.length > 129) {
+        res.status(404).json({ message: "No essays please, 128 characters max."})
+    } else {
+        next();
+    }
+}
+
+
 // CRUD Operations
 // Get. **Postman Tested: working**
 router.get('/', (req, res) => {
@@ -36,7 +46,7 @@ router.get('/:id', (req, res) => {
 
 // Post. **Postman Tested: working**
 // MUST BE POSTED TO A VALID PROJECT_ID SAME THING YOU MISSED THE OTHER DAY PATTY.
-router.post('/', (req, res) => {
+router.post('/', noEssays, (req, res) => {
     const { project_id, description, notes }= req.body;
 
     if(!project_id || !description || !notes) {
@@ -72,7 +82,7 @@ router.delete('/:id', (req, res) => {
 })
 
 // Put/Update. **Postman Tested: **
-router.put('/:id', (req, res) => {
+router.put('/:id', noEssays, (req, res) => {
     const id = req.params.id;
     const { description, notes } = req.body;
 
